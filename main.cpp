@@ -5,6 +5,7 @@
 #include "FSMElement.h"
 #include "FSMValue.h"
 #include "FSMObject.h"
+#include "FSMArray.h"
 #include "FSMNumber.h"
 #include "FSMString.h"
 #include "FSMTrue.h"
@@ -87,7 +88,7 @@ void stackFSMsPush(int instance, genericFSM** stack, uint& stackLevel) {
 	case NEWELEM:	newFSM = new (std::nothrow) FSMElement;	printf("Entering Element FSM\n"); break;
 	case NEWOBJ:	newFSM = new (std::nothrow) FSMObject;	printf("Entering Object FSM\n"); break;
 	case NEWVALUE:	newFSM = new (std::nothrow) FSMValue;	printf("Entering Value FSM\n"); break;
-	//case NEWOBJ: newFSM = new (std::nothrow) FSMObject;		break;
+	case NEWARRAY: newFSM = new (std::nothrow) FSMArray;	printf("Entering Array FSM\n");	break;
 	case NEWSTRING: newFSM = new (std::nothrow) FSMString;	printf("Entering String FSM\n"); break;
 	case NEWNUM: newFSM = new (std::nothrow) FSMNumber;		printf("Entering Number FSM\n"); break;
 	case NEWTRUE: newFSM = new (std::nothrow) FSMTrue;		printf("Entering True FSM\n"); break;

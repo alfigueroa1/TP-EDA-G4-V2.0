@@ -59,5 +59,8 @@
     <ClInclude Include="FSMElement.h">
       <Filter>Header Files\Specific FSMs</Filter>
     </ClInclude>
+    <ClInclude Include="FSMArray.h">
+      <Filter>Header Files\Specific FSMs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
