@@ -6,6 +6,9 @@
 #include "FSMObject.h"
 #include "FSMNumber.h"
 #include "FSMString.h"
+#include "FSMTrue.h"
+#include "FSMFalse.h"
+#include "FSMNull.h"
 
 void stackFSMsPush(int instance, genericFSM** stack, uint &stackLevel);
 void stackFSMsPop(genericFSM** stack, uint& stackLevel);
@@ -81,9 +84,12 @@ void stackFSMsPush(int instance, genericFSM** stack, uint& stackLevel) {
 	switch (instance) {
 	case NEWOBJ:	newFSM = new (std::nothrow) FSMObject;	printf("Entering Object FSM\n"); break;
 	case NEWVALUE:	newFSM = new (std::nothrow) FSMValue;	printf("Entering Value FSM\n"); break;
-		//case NEWOBJ: FSMObject* newFSM = new (std::nothrow) FSMObject;		break;
+	//case NEWOBJ: newFSM = new (std::nothrow) FSMObject;		break;
 	case NEWSTRING: newFSM = new (std::nothrow) FSMString;	printf("Entering String FSM\n"); break;
 	case NEWNUM: newFSM = new (std::nothrow) FSMNumber;		printf("Entering Number FSM\n"); break;
+	case NEWTRUE: newFSM = new (std::nothrow) FSMTrue;		printf("Entering True FSM\n"); break;
+	case NEWFALSE: newFSM = new (std::nothrow) FSMFalse;	printf("Entering False FSM\n"); break;
+	case NEWNULL: newFSM = new (std::nothrow) FSMNull;		printf("Entering Null FSM\n"); break;
 	default: genericFSM* newFSM = NULL; break;
 	}
 	if (newFSM == NULL) {
@@ -103,7 +109,7 @@ void stackFSMsPop(genericFSM** stack, uint& stackLevel) {
 }
 
 void freeStack(genericFSM** stack, uint& stackLevel) {
-	for (uint i = stackLevel; i > 0; i--) {
+	for (uint i = stackLevel; i > 0;) {
 		stackFSMsPop(stack, i);
 	}
 }
