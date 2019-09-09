@@ -47,5 +47,14 @@
     <ClInclude Include="FSMValue.h">
       <Filter>Header Files\Specific FSMs</Filter>
     </ClInclude>
+    <ClInclude Include="FSMTrue.h">
+      <Filter>Header Files\Specific FSMs</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMFalse.h">
+      <Filter>Header Files\Specific FSMs</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMNull.h">
+      <Filter>Header Files\Specific FSMs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

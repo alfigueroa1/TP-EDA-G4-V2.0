@@ -130,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h" />
+    <ClInclude Include="FSMFalse.h" />
+    <ClInclude Include="FSMNull.h" />
+    <ClInclude Include="FSMTrue.h" />
     <ClInclude Include="FSMValue.h" />
     <ClInclude Include="FSMNumber.h" />
     <ClInclude Include="FSMObject.h" />
