@@ -9,20 +9,22 @@ class FSMTrue :public genericFSM {
 
 public:
 	FSMTrue() {
-		rowCount = 4;
+		rowCount = 5;
 		done = false;
 		state = trueState0;
 	}
 	virtual int filterEvents(eventType ev) {
 		switch (ev) {
-		case 'r':
+		case 't':
 			return 1;
-		case 'u':
+		case 'r':
 			return 2;
-		case 'e':
+		case 'u':
 			return 3;
-		default:
+		case 'e':
 			return 4;
+		default:
+			return 5;
 		}
 	}
 	virtual void cycle(eventType* ev) {
@@ -34,6 +36,7 @@ public:
 		case trueState0:	j = 0; break;
 		case trueState1:	j = 1; break;
 		case trueState2:	j = 2; break;
+		case trueState3:    j = 3; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
 		FSMTable[(state * rowCount) + (evento - 1)].action;
@@ -44,10 +47,11 @@ private:
 
 	//const fsmCell fsmTable[4][6] = {
 	const fsmCell FSMTable[12] = {
-		//Recibir 'r'				Recibir 'u'					Recibir 'e'				Recibir 'others'		
-		{trueState1, QX(valueNop)},	{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},	{ERROR, QX(valueNop)},
-		{ERROR, QX(valueNop) },		{trueState2, QX(valueNop) }, {ERROR, QX(valueNop) }, {ERROR, QX(valueNop) },
-		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{FIN, QX(valueNop)},		{ERROR, QX(valueNop)},
+		//Recibir 't'				Recibir 'r'					Recibir 'u'					Recibir 'e'				Recibir others		
+		{trueState1, QX(valueNop)},	{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop) },		{trueState2, QX(valueNop) }, {ERROR, QX(valueNop) },	{ERROR, QX(valueNop) },	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{trueState3, QX(valueNop)},	{ERROR, QX(valueNop)},	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{FIN, QX(valueNop)},	{ERROR, QX(valueNop)},
 	};
 	void valueNop(eventType* ev) {
 		return;

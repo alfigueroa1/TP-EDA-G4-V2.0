@@ -15,12 +15,14 @@ public:
 	}
 	virtual int filterEvents(eventType ev) {
 		switch (ev) {
-		case 'u':
+		case 'n':
 			return 1;
-		case 'l':
+		case 'u':
 			return 2;
-		default:
+		case 'l':
 			return 3;
+		default:
+			return 4;
 		}
 	}
 	virtual void cycle(eventType* ev) {
@@ -32,6 +34,7 @@ public:
 		case nullState0:	j = 0; break;
 		case nullState1:	j = 1; break;
 		case nullState2:	j = 2; break;
+		case nullState3:    j = 3; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
 		FSMTable[(state * rowCount) + (evento - 1)].action;
@@ -42,10 +45,11 @@ private:
 
 	//const fsmCell fsmTable[4][6] = {
 	const fsmCell FSMTable[9] = {
-		//Recibir 'u'				Recibir 'l'					Recibir 'others'		
-		{nullState1, QX(valueNop)},	{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},
-		{ERROR, QX(valueNop) },		{nullState2, QX(valueNop)}, {ERROR, QX(valueNop) },
-		{ERROR, QX(valueNop)},		{FIN, QX(valueNop)},		{ERROR, QX(valueNop)},
+		//Recibir 'n'				Recibir 'u'					Recibir 'l'				Recibir others
+		{nullState1, QX(valueNop)},	{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop) },		{nullState2, QX(valueNop)}, {ERROR, QX(valueNop) },	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{nullState3, QX(valueNop)},	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{FIN, QX(valueNop)},	{ERROR, QX(valueNop)},
 	};
 	void valueNop(eventType* ev) {
 		return;

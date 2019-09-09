@@ -8,7 +8,7 @@
 class FSMValue :public genericFSM {
 
 public:
-	FSMValue(){
+	FSMValue() {
 		rowCount = 8;
 		done = false;
 		state = valueState0;

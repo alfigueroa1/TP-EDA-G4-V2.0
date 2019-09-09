@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "events.h"
 #include "genericFSM.h"
+#include "FSMElement.h"
 #include "FSMValue.h"
 #include "FSMObject.h"
 #include "FSMNumber.h"
@@ -16,12 +17,12 @@ void freeStack(genericFSM** stack, uint& stackLevel);
 
 int main(int argc, char** argv) {
 	genericFSM* stackFSMs[100];
-	FSMValue valor;
+	FSMElement element;
 	int error = 0, quit = 0, line = 1;
 	int instance  = 0;
 	eventType ev = NOEVENT;
 	FILE* archivo;
-	stackFSMs[0] = &valor;
+	stackFSMs[0] = &element;
 	archivo = fopen("JSONFile.txt", "r");
 	if (archivo == NULL) {
 		printf("Error al intentar abrir el archivo de Json\n");
@@ -65,6 +66,7 @@ int main(int argc, char** argv) {
 				last = stackLevel;
 				printf("New FSM instance needed!\n");
 				printf("StackLevel: %d\n", stackLevel);
+				stackFSMs[stackLevel]->cycle(&ev);
 			}
 		}
 	}
@@ -82,6 +84,7 @@ int main(int argc, char** argv) {
 void stackFSMsPush(int instance, genericFSM** stack, uint& stackLevel) {
 	genericFSM* newFSM = NULL;
 	switch (instance) {
+	case NEWELEM:	newFSM = new (std::nothrow) FSMElement;	printf("Entering Element FSM\n"); break;
 	case NEWOBJ:	newFSM = new (std::nothrow) FSMObject;	printf("Entering Object FSM\n"); break;
 	case NEWVALUE:	newFSM = new (std::nothrow) FSMValue;	printf("Entering Value FSM\n"); break;
 	//case NEWOBJ: newFSM = new (std::nothrow) FSMObject;		break;
