@@ -46,7 +46,7 @@ private:
 #define QX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMTrue::x))
 
 	//const fsmCell fsmTable[4][6] = {
-	const fsmCell FSMTable[12] = {
+	const fsmCell FSMTable[20] = {
 		//Recibir 't'				Recibir 'r'					Recibir 'u'					Recibir 'e'				Recibir others		
 		{trueState1, QX(valueNop)},	{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},	{ERROR, QX(valueNop)},
 		{ERROR, QX(valueNop) },		{trueState2, QX(valueNop) }, {ERROR, QX(valueNop) },	{ERROR, QX(valueNop) },	{ERROR, QX(valueNop)},
