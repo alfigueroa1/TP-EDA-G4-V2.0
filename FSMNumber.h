@@ -61,7 +61,7 @@ private:
             {numState1, TX(nopNum)},	{numState2, TX(nopNum)},	{numState3, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState1, TX(nopNum)},   {ERROR, TX(nopNum)},
             {ERROR, TX(nopNum)},		{numState2, TX(nopNum)},	{numState3, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {ERROR, TX(nopNum)},
             {ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState4, TX(nopNum)},	{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState3, TX(nopNum)}, 	{numState3, TX(nopNum)},	{numState4, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
+            {ERROR, TX(nopNum)},		{numState3, TX(nopNum)}, 	{numState3, TX(nopNum)},	{numState4, TX(nopNum)},	{numState6, TX(nopNum)},		{numState6, TX(nopNum)},		{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
             {ERROR, TX(nopNum)},		{numState5, TX(nopNum)},	{numState5, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {ERROR, TX(nopNum)},
             {ERROR, TX(nopNum)},		{numState5, TX(nopNum)},	{numState5, TX(nopNum)},	{ERROR, TX(nopNum)},		{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
             {numState7, TX(nopNum)},	{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState7, TX(nopNum)},	{ERROR, TX(nopNum)},
