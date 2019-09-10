@@ -15,16 +15,16 @@ public:
 	}
 	virtual int filterEvents(eventType ev) {
 		switch (ev) {
-		case '/':
-			return 1;
 		case '"':
-			return 2;
+			return 1;
 		case EOF:
+			return 2;
+		case '/':
 			return 3;
 		case 'f':case 'n':case 'r':case 't':case 'u':case 'b':
 			return 4;
 		default:
-			return 5;
+			return 6;
 		}
 	}
 	virtual void cycle(eventType* ev) {
@@ -46,14 +46,14 @@ public:
 private:
 #define SX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMString::x))
 
-    const fsmCell FSMTable[30] = {
+    const fsmCell FSMTable[24] = {
 
-            // Recibir "				// Recibir char				// Recibir \			// Recibir u            // Recibir 4hex             // Recibir symb
-            {strState1, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},	{ERROR, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},
-            {FIN, SX(strNop)},			{strState1, SX(strNop)},	{strState2, SX(strNop)},{strState1, SX(strNop)},{strState1, SX(strNop)},    {strState1, SX(strNop)},
-            {strState3, SX(strNop)},	{ERROR, SX(strNop)},		{strState3, SX(strNop)},{strState4, SX(strNop)},{ERROR, SX(strNop)},		{strState3, SX(strNop)},
-            {FIN, SX(strNop)},			{strState1, SX(strNop)}, 	{strState2, SX(strNop)},{strState1, SX(strNop)},{strState1, SX(strNop)},    {strState1, SX(strNop)},
-            {ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{ERROR, SX(strNop)},	{ERROR, SX(strNop)},	{strState3, SX(strNop)},    {ERROR, SX(strNop)}
+            // Recibir "				// Recibir EOF			// Recibir \				// Recibir chars				// Recibir 4hex         // Recibir others
+            {strState1, SX(strNop)},	{ERROR, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{ERROR, SX(strNop)},
+            {FIN, SX(strNop)},			{ERROR, SX(strNop)},	{strState2, SX(strNop)},	{strState1, SX(strNop)},	{strState1, SX(strNop)},    {strState1, SX(strNop)},
+            {strState3, SX(strNop)},	{ERROR, SX(strNop)},	{strState3, SX(strNop)},	{strState3, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},
+            {FIN, SX(strNop)},			{ERROR, SX(strNop)}, 	{strState2, SX(strNop)},	{strState1, SX(strNop)},	{strState1, SX(strNop)},    {strState1, SX(strNop)},
+       //     {ERROR, SX(strNop)},		{ERROR, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{strState3, SX(strNop)},    {ERROR, SX(strNop)}
     };
 	void strNop(eventType* ev) {
 		return;
