@@ -13,6 +13,8 @@ public:
 		done = false;
 		state = numState0;
 	}
+	
+	// Asocia cada evento con un número correspondiente a su posición en el arreglo
 	virtual int filterEvents(eventType ev) {
 		switch (ev) {
 		case '-':
@@ -32,6 +34,8 @@ public:
 		default: return 8;
 		}
 	}
+	
+	// Cambia de estado según el evento
 	virtual void cycle(eventType* ev) {
 		eventType evento;
 		int i = 0, j = 0;
@@ -57,16 +61,16 @@ private:
 
     const fsmCell FSMTable[72] = {
 
-            // Recibir -				// Recibir 0				// Recibir digit			// Recibir .				// Recibir e				// Recibir E				// Recibir +                //Recibir fin
-            {numState1, TX(nopNum)},	{numState2, TX(nopNum)},	{numState3, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState1, TX(nopNum)},   {ERROR, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState2, TX(nopNum)},	{numState3, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {ERROR, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState4, TX(nopNum)},	{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState3, TX(nopNum)}, 	{numState3, TX(nopNum)},	{numState4, TX(nopNum)},	{numState6, TX(nopNum)},		{numState6, TX(nopNum)},		{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState5, TX(nopNum)},	{numState5, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {ERROR, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState5, TX(nopNum)},	{numState5, TX(nopNum)},	{ERROR, TX(nopNum)},		{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
-            {numState7, TX(nopNum)},	{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState7, TX(nopNum)},	{ERROR, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {ERROR, TX(nopNum)},
-            {ERROR, TX(nopNum)},		{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       {FIN, TX(nopNum)},
+            // Recibir -			// Recibir 0			// Recibir digit		// Recibir .			// Recibir e			// Recibir E			// Recibir +                		//Recibir fin
+            {numState1, TX(nopNum)},		{numState2, TX(nopNum)},	{numState3, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState1, TX(nopNum)},   		{ERROR, TX(nopNum)},  // State0 (IDLE)
+            {ERROR, TX(nopNum)},		{numState2, TX(nopNum)},	{numState3, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       		{ERROR, TX(nopNum)},  // State1 
+            {ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState4, TX(nopNum)},	{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},      		{FIN, TX(nopNum)},    // State2 
+            {ERROR, TX(nopNum)},		{numState3, TX(nopNum)}, 	{numState3, TX(nopNum)},	{numState4, TX(nopNum)},	{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},       		{FIN, TX(nopNum)},    // State3
+            {ERROR, TX(nopNum)},		{numState5, TX(nopNum)},	{numState5, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       		{ERROR, TX(nopNum)},  // State4
+            {ERROR, TX(nopNum)},		{numState5, TX(nopNum)},	{numState5, TX(nopNum)},	{ERROR, TX(nopNum)},		{numState6, TX(nopNum)},	{numState6, TX(nopNum)},	{ERROR, TX(nopNum)},       		{FIN, TX(nopNum)},    // State5
+            {numState7, TX(nopNum)},		{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{numState7, TX(nopNum)},		{ERROR, TX(nopNum)},  // State6
+            {ERROR, TX(nopNum)},		{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       		{ERROR, TX(nopNum)},  // State7
+            {ERROR, TX(nopNum)},		{numState8, TX(nopNum)},	{numState8, TX(nopNum)},	{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},		{ERROR, TX(nopNum)},       		{FIN, TX(nopNum)},    // State8
     };
 	void nopNum(eventType* ev) {
 		return;
