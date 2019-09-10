@@ -5,6 +5,7 @@ operation opFile = {file, (char*) "-file", (pCallback) &loadFile};
 
 /* --- Declaracion de las funciones --- */
 
+// Funcion para cargar el archivo mandado por linea de comandos
 int loadFile(char *key, char *value, void *userData){
     FILE* archivo;
     archivo = fopen(value, "r");
@@ -29,6 +30,7 @@ int parseCallback (char *key, char *value, void *userData)
         //Buscamos si la opcion existe
         if (strcmp(key, opFile.name)==0 && value!=NULL)
         {
+            // Si existe la ejecutamos
             if(opFile.action(key, value, userData))
                 return 1;
         }
