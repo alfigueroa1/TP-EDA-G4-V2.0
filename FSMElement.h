@@ -10,7 +10,7 @@ class FSMElement :public genericFSM {
 public:
 	FSMElement() {
 		rowCount = 0;
-		done = false;
+		done = true;
 		state = elementState0;
 	}
 	virtual int filterEvents(eventType ev) {

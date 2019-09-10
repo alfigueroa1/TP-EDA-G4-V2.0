@@ -47,17 +47,11 @@ int main(int argc, char** argv) {
 				}
 				else{
 					stackFSMsPop(stackFSMs, stackLevel);
-					printf("Instance finished, stack poped\n");
-					printf("StackLevel: %d\n", stackLevel);
 					while (stackFSMs[stackLevel]->getDone()) {
-						if (stackLevel == 0) {
+						if (stackLevel == 0)
 							break;
-						}
-						else {
+						else
 							stackFSMsPop(stackFSMs, stackLevel);
-							printf("Instance finished, stack poped\n");
-							printf("StackLevel: %d\n", stackLevel);
-						}
 					}
 					stackFSMs[stackLevel]->cycle(&ev);
 					checkNewInstance(stackFSMs, stackLevel, &ev);
@@ -107,6 +101,8 @@ void stackFSMsPop(genericFSM** stack, uint& stackLevel) {
 		delete stack[stackLevel];
 		stackLevel--;
 	}
+	printf("Instance finished, stack poped\n");
+	printf("StackLevel: %d\n", stackLevel);
 }
 
 void freeStack(genericFSM** stack, uint& stackLevel) {
