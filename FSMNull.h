@@ -35,6 +35,7 @@ public:
 		case nullState1:	j = 1; break;
 		case nullState2:	j = 2; break;
 		case nullState3:    j = 3; break;
+		case nullState4:    j = 4; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
 		FSMTable[(j * rowCount) + (evento - 1)].action;
@@ -44,12 +45,13 @@ private:
 #define QX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMNull::x))
 
 	//const fsmCell fsmTable[4][6] = {
-	const fsmCell FSMTable[16] = {
+	const fsmCell FSMTable[20] = {
 		//Recibir 'n'				Recibir 'u'					Recibir 'l'				Recibir others
 		{nullState1, QX(valueNop)},	{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},	{ERROR, QX(valueNop)},
 		{ERROR, QX(valueNop) },		{nullState2, QX(valueNop)}, {ERROR, QX(valueNop) },	{ERROR, QX(valueNop)},
 		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{nullState3, QX(valueNop)},	{ERROR, QX(valueNop)},
-		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{FIN, QX(valueNop)},	{ERROR, QX(valueNop)},
+		{ERROR, QX(valueNop)},		{ERROR, QX(valueNop)},		{nullState4, QX(valueNop)},	{ERROR, QX(valueNop)},
+		{FIN, QX(valueNop)},		{FIN, QX(valueNop)},		{FIN, QX(valueNop)},	{FIN, QX(valueNop)},
 	};
 	void valueNop(eventType* ev) {
 		return;

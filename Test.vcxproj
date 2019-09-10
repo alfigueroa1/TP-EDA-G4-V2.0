@@ -127,6 +127,8 @@
   <ItemGroup>
     <ClCompile Include="events.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="parseCmdLine.cpp" />
+    <ClCompile Include="userData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h" />
@@ -141,6 +143,8 @@
     <ClInclude Include="FSMstates.h" />
     <ClInclude Include="FSMString.h" />
     <ClInclude Include="genericFSM.h" />
+    <ClInclude Include="parseCmdLine.h" />
+    <ClInclude Include="userData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -49,6 +49,7 @@ public:
 		case NEWTRUE:		j = 5; break;
 		case NEWFALSE:		j = 6; break;
 		case NEWNULL:		j = 7; break;
+		case ERROR:		evento = 9; j = 0; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
 		FSMTable[(j * rowCount) + (evento - 1)].action;

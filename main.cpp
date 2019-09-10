@@ -11,6 +11,8 @@
 #include "FSMTrue.h"
 #include "FSMFalse.h"
 #include "FSMNull.h"
+#include "parseCmdLine.h"
+#include "userData.h"
 
 void stackFSMsPush(int instance, genericFSM** stack, uint &stackLevel);
 void stackFSMsPop(genericFSM** stack, uint& stackLevel);
@@ -18,56 +20,70 @@ void freeStack(genericFSM** stack, uint& stackLevel);
 void checkNewInstance(genericFSM** stackFSMs, uint& stackLevel, eventType* ev);
 
 int main(int argc, char** argv) {
-	genericFSM* stackFSMs[100];
-	FSMElement element;
-	int error = 0, quit = 0, line = 1;
-	int instance  = 0;
-	eventType ev = NOEVENT;
-	FILE* archivo;
-	stackFSMs[0] = &element;
-	archivo = fopen("JSONFile.txt", "r");
-	if (archivo == NULL) {
-		printf("Error al intentar abrir el archivo de Json\n");
-		return 0;
-	}
-	unsigned int stackLevel = 0, last = 0;
-	while (ev != EOF && !quit) {
-		if ((stackFSMs[stackLevel]->getState()) != FIN)
-			ev = getNextEvent(archivo, line);
-		if (ev != NOEVENT) {
-			printf("Event detected: %c at line %d\n", ev, line);
-			stackFSMs[stackLevel]->cycle(&ev);
-			if ((stackFSMs[stackLevel]->getState()) == ERROR) {
-				quit = 1;
-				printf("Error Found at line %d!\n", line);
-			}
-			else if ((stackFSMs[stackLevel]->getState()) == FIN) {
-				if (stackLevel == 0) {
-					break;
+	argTypes archivo;
+	if (parseCmdLine(argc, argv, parseCallback, &archivo) != -1)
+	{
+
+		genericFSM* stackFSMs[100];
+		FSMElement element;
+		int error = 0, quit = 0, line = 1;
+		int instance = 0;
+		eventType ev = NOEVENT;
+		//FILE* archivo;
+		stackFSMs[0] = &element;
+		/*archivo = fopen("JSONFile.txt", "r");
+		if (archivo == NULL) {
+			printf("Error al intentar abrir el archivo de Json\n");
+			return 0;
+		}*/
+
+		unsigned int stackLevel = 0, last = 0;
+		while (ev != EOF && !quit) {
+			//if (!flag)
+				ev = getNextEvent(archivo.file, line);
+			if (ev != NOEVENT) {
+				printf("Event detected: %c at line %d\n", ev, line);
+				//if(!flag)
+				stackFSMs[stackLevel]->cycle(&ev);
+				//flag = false;
+				if ((stackFSMs[stackLevel]->getState()) == ERROR) {
+					quit = 1;
+					printf("Error Found at line %d!\n", line);
 				}
-				else{
-					stackFSMsPop(stackFSMs, stackLevel);
-					while (stackFSMs[stackLevel]->getDone()) {
-						if (stackLevel == 0)
-							break;
-						else
-							stackFSMsPop(stackFSMs, stackLevel);
+				else if ((stackFSMs[stackLevel]->getState()) == FIN) {
+					if (stackLevel == 0) {
+						break;
 					}
-					stackFSMs[stackLevel]->cycle(&ev);
+					else {
+						stackFSMsPop(stackFSMs, stackLevel);
+						while (stackFSMs[stackLevel]->getDone()) {
+							if (stackLevel == 0) {
+								break;
+							}
+							else
+								stackFSMsPop(stackFSMs, stackLevel);
+						}
+						stackFSMs[stackLevel]->cycle(&ev);
+						//if((stackFSMs[stackLevel]->getState()) == FIN)
+						//	flag = true;
+						checkNewInstance(stackFSMs, stackLevel, &ev);
+					}
+				}
+				else {
 					checkNewInstance(stackFSMs, stackLevel, &ev);
 				}
 			}
-			else{
-				checkNewInstance(stackFSMs, stackLevel, &ev);
-			}
 		}
+		freeStack(stackFSMs, stackLevel);
+		if (quit)
+			printf("Invalid sintaxis in file\n");
+		else
+			printf("Valid File\n");
+		fclose(archivo.file);
+
 	}
-	freeStack(stackFSMs, stackLevel);
-	if (quit) 
-		printf("Invalid sintaxis in file\n");
 	else
-		printf("Valid File\n");
-	fclose(archivo);
+		printf("Archivo invalido");
 	return 0;
 }
 
@@ -118,7 +134,8 @@ void checkNewInstance(genericFSM** stackFSMs, uint& stackLevel, eventType *ev) {
 		stackFSMsPush(stackFSMs[stackLevel]->getState(), stackFSMs, stackLevel);
 		//printf("New FSM instance needed!\n");
 		printf("StackLevel: %d\n", stackLevel);
-		stackFSMs[stackLevel]->cycle(ev);
+		//if(stackFSMs[stackLevel-1]->getDone() == false)
+			stackFSMs[stackLevel]->cycle(ev);
 	}
 	return;
 }

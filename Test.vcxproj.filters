@@ -24,6 +24,12 @@
     <ClCompile Include="events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="parseCmdLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h">
@@ -61,6 +67,12 @@
     </ClInclude>
     <ClInclude Include="FSMArray.h">
       <Filter>Header Files\Specific FSMs</Filter>
+    </ClInclude>
+    <ClInclude Include="parseCmdLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

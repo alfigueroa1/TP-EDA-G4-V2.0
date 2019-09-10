@@ -35,6 +35,8 @@ public:
 		case arrayState1:	j = 1; break;
 		case NEWVALUE:		j = 2; break;
 		case FIN:	j = 2; evento = 2; break;
+		case arrayState2:   j = 3; break;
+		case arrayState3:   j = 4; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
 		FSMTable[(j * rowCount) + (evento - 1)].action;
@@ -45,11 +47,14 @@ private:
 #define AX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMArray::x))
 
 	//const fsmCell FSMTable[2][3] = {
-	const fsmCell FSMTable[12] = {
+	const fsmCell FSMTable[20] = {
 		//Recibir '['					RECIBIR ']'					//RECIBIR ','				//Other
 		{arrayState1, AX(arrayOk)},		{ERROR, AX(arrayError)},	{ERROR, AX(arrayError)},	{ERROR, AX(arrayError)},//arrayState0
-		{NEWVALUE, AX(arrayOk)},		{FIN, AX(arrayOk)},			{NEWVALUE, AX(arrayOk)},	{NEWVALUE, AX(arrayOk)},//arraySate1
-		{ERROR, AX(arrayError)},		{FIN, AX(arrayOk)},			{NEWVALUE, AX(arrayOk)},	{ERROR, AX(arrayError)}	//NEWVALUE
+		{NEWVALUE, AX(arrayOk)},		{arrayState3, AX(arrayOk)},	{ERROR, AX(arrayOk)},		{NEWVALUE, AX(arrayOk)},//arraySate1
+		{ERROR, AX(arrayError)},		{arrayState3, AX(arrayOk)},	{arrayState2, AX(arrayOk)},	{ERROR, AX(arrayError)},	//NEWVALUE
+		{NEWVALUE, AX(arrayOk)},		{NEWVALUE, AX(arrayOk)},	{NEWVALUE, AX(arrayOk)},	{NEWVALUE, AX(arrayError)},
+		{FIN, AX(arrayOk)},				{FIN, AX(arrayOk)},			{FIN, AX(arrayOk)},			{FIN, AX(arrayOk)}
+
 	};
 
 	void arrayError(eventType* ev) {

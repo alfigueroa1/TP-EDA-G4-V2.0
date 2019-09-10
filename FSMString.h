@@ -46,14 +46,15 @@ public:
 private:
 #define SX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMString::x))
 
-    const fsmCell FSMTable[24] = {
+    const fsmCell FSMTable[30] = {
 
             // Recibir "				// Recibir EOF			// Recibir \				// Recibir chars				// Recibir 4hex         // Recibir others
             {strState1, SX(strNop)},	{ERROR, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{ERROR, SX(strNop)},
-            {FIN, SX(strNop)},			{ERROR, SX(strNop)},	{strState2, SX(strNop)},	{strState1, SX(strNop)},	{strState1, SX(strNop)},    {strState1, SX(strNop)},
+            {strState4, SX(strNop)},			{ERROR, SX(strNop)},	{strState2, SX(strNop)},	{strState1, SX(strNop)},	{strState1, SX(strNop)},    {strState1, SX(strNop)},
             {strState3, SX(strNop)},	{ERROR, SX(strNop)},	{strState3, SX(strNop)},	{strState3, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},
-            {FIN, SX(strNop)},			{ERROR, SX(strNop)}, 	{strState2, SX(strNop)},	{strState1, SX(strNop)},	{strState1, SX(strNop)},    {strState1, SX(strNop)},
-       //     {ERROR, SX(strNop)},		{ERROR, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{strState3, SX(strNop)},    {ERROR, SX(strNop)}
+            {strState4, SX(strNop)},			{ERROR, SX(strNop)}, 	{strState2, SX(strNop)},	{strState1, SX(strNop)},	{strState1, SX(strNop)},    {strState1, SX(strNop)},
+			{FIN, SX(strNop)},			{FIN, SX(strNop)}, 		{FIN, SX(strNop)},			{FIN, SX(strNop)},			{FIN, SX(strNop)},			{FIN, SX(strNop)}
+			//     {ERROR, SX(strNop)},		{ERROR, SX(strNop)},	{ERROR, SX(strNop)},		{ERROR, SX(strNop)},		{strState3, SX(strNop)},    {ERROR, SX(strNop)}
     };
 	void strNop(eventType* ev) {
 		return;
