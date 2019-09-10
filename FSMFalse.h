@@ -42,7 +42,7 @@ public:
 		case falseState4:	j = 4; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
-		FSMTable[(state * rowCount) + (evento - 1)].action;
+		FSMTable[(j * rowCount) + (evento - 1)].action;
 	}
 
 private:

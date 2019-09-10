@@ -37,7 +37,7 @@ public:
 		case nullState3:    j = 3; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
-		FSMTable[(state * rowCount) + (evento - 1)].action;
+		FSMTable[(j * rowCount) + (evento - 1)].action;
 	}
 
 private:

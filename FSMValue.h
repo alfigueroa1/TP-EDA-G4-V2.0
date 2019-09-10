@@ -9,8 +9,8 @@ class FSMValue :public genericFSM {
 
 public:
 	FSMValue() {
-		rowCount = 8;
-		done = false;
+		rowCount = 9;
+		done = true;
 		state = valueState0;
 	}
 	virtual int filterEvents(eventType ev) {
@@ -29,8 +29,10 @@ public:
 			return 6;
 		case 'n':
 			return 7;
-		default:
+		case EOF:
 			return 8;
+		default:
+			return 9;
 		}
 	}
 	virtual void cycle(eventType* ev) {
@@ -49,29 +51,30 @@ public:
 		case NEWNULL:		j = 7; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
-		FSMTable[(state * rowCount) + (evento - 1)].action;
+		FSMTable[(j * rowCount) + (evento - 1)].action;
 	}
 
 private:
 #define QX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMValue::x))
 
 	//const fsmCell fsmTable[4][6] = {
-	const fsmCell FSMTable[64] = {
-		//Recibir '"'				Recibir '-' o 0-9		Recibir '{'				Recibir '['					Recibir 't'						Recibir 'f'						Recibir 'n'				Recibir otro
-		{NEWSTRING, QX(valueOk)},	{NEWNUM, QX(valueOk)},	{NEWOBJ, QX(valueOk)},	{NEWARRAY, QX(valueOk)},	{NEWTRUE, QX(valueOk)},			{NEWFALSE, QX(valueOk)},		{NEWNULL, QX(valueOk)},	{ERROR, QX(valueNop)},	//INIT
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWSTRING	
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWNUM
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWOBJ
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWARRAY
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWTRUE
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWFALSE
-		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		//NEWNULL
+	const fsmCell FSMTable[72] = {
+		//Recibir '"'				Recibir '-' o 0-9		Recibir '{'				Recibir '['					Recibir 't'						Recibir 'f'						Recibir 'n'				Recibir EOF				Recibir otro
+		{NEWSTRING, QX(valueOk)},	{NEWNUM, QX(valueOk)},	{NEWOBJ, QX(valueOk)},	{NEWARRAY, QX(valueOk)},	{NEWTRUE, QX(valueOk)},			{NEWFALSE, QX(valueOk)},		{NEWNULL, QX(valueOk)},	{FIN, QX(valueOk)},  {ERROR, QX(valueNop)},	//INIT
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWSTRING	
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWNUM
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWOBJ
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWARRAY
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWTRUE
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWFALSE
+		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},		{FIN, QX(valueOk)},		{FIN, QX(valueOk)},			{FIN, QX(valueOk)},				{FIN, QX(valueOk)},				{FIN, QX(valueOk)},		{FIN, QX(valueOk)},	  {FIN, QX(valueOk)},		//NEWNULL
 	};
 	void valueNop(eventType* ev) {
 		return;
 	}
 	void valueOk(eventType* ev) {
 		done = true;
+		printf("Done = true");
 		return;
 	}
 };

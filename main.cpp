@@ -15,6 +15,7 @@
 void stackFSMsPush(int instance, genericFSM** stack, uint &stackLevel);
 void stackFSMsPop(genericFSM** stack, uint& stackLevel);
 void freeStack(genericFSM** stack, uint& stackLevel);
+void checkNewInstance(genericFSM** stackFSMs, uint& stackLevel, eventType* ev);
 
 int main(int argc, char** argv) {
 	genericFSM* stackFSMs[100];
@@ -31,21 +32,11 @@ int main(int argc, char** argv) {
 	}
 	unsigned int stackLevel = 0, last = 0;
 	while (ev != EOF && !quit) {
-		ev = getNextEvent(archivo, line);
+		if ((stackFSMs[stackLevel]->getState()) != FIN)
+			ev = getNextEvent(archivo, line);
 		if (ev != NOEVENT) {
 			printf("Event detected: %c at line %d\n", ev, line);
 			stackFSMs[stackLevel]->cycle(&ev);
-			while (stackFSMs[stackLevel]->getDone() == true) {
-				if (stackLevel == 0) {
-					break;
-				}
-				else {
-					stackFSMsPop(stackFSMs, stackLevel); 
-					printf("Instance finished, stack poped\n");
-					printf("StackLevel: %d\n", stackLevel);
-				}
-				continue;
-			}
 			if ((stackFSMs[stackLevel]->getState()) == ERROR) {
 				quit = 1;
 				printf("Error Found at line %d!\n", line);
@@ -58,16 +49,22 @@ int main(int argc, char** argv) {
 					stackFSMsPop(stackFSMs, stackLevel);
 					printf("Instance finished, stack poped\n");
 					printf("StackLevel: %d\n", stackLevel);
+					while (stackFSMs[stackLevel]->getDone()) {
+						if (stackLevel == 0) {
+							break;
+						}
+						else {
+							stackFSMsPop(stackFSMs, stackLevel);
+							printf("Instance finished, stack poped\n");
+							printf("StackLevel: %d\n", stackLevel);
+						}
+					}
+					stackFSMs[stackLevel]->cycle(&ev);
+					checkNewInstance(stackFSMs, stackLevel, &ev);
 				}
 			}
-			else if ((stackFSMs[stackLevel]->getState()) == NEWOBJ || (stackFSMs[stackLevel]->getState()) == NEWARRAY
-				|| (stackFSMs[stackLevel]->getState()) == NEWTRUE || (stackFSMs[stackLevel]->getState()) == NEWFALSE || (stackFSMs[stackLevel]->getState()) == NEWNULL
-				|| (stackFSMs[stackLevel]->getState()) == NEWVALUE || (stackFSMs[stackLevel]->getState()) == NEWSTRING || (stackFSMs[stackLevel]->getState()) == NEWNUM) {
-				stackFSMsPush(stackFSMs[stackLevel]->getState(), stackFSMs, stackLevel);
-				last = stackLevel;
-				printf("New FSM instance needed!\n");
-				printf("StackLevel: %d\n", stackLevel);
-				stackFSMs[stackLevel]->cycle(&ev);
+			else{
+				checkNewInstance(stackFSMs, stackLevel, &ev);
 			}
 		}
 	}
@@ -116,4 +113,16 @@ void freeStack(genericFSM** stack, uint& stackLevel) {
 	for (uint i = stackLevel; i > 0;) {
 		stackFSMsPop(stack, i);
 	}
+}
+
+void checkNewInstance(genericFSM** stackFSMs, uint& stackLevel, eventType *ev) {
+	while ((stackFSMs[stackLevel]->getState()) == NEWELEM || (stackFSMs[stackLevel]->getState()) == NEWOBJ || (stackFSMs[stackLevel]->getState()) == NEWARRAY
+		|| (stackFSMs[stackLevel]->getState()) == NEWTRUE || (stackFSMs[stackLevel]->getState()) == NEWFALSE || (stackFSMs[stackLevel]->getState()) == NEWNULL
+		|| (stackFSMs[stackLevel]->getState()) == NEWVALUE || (stackFSMs[stackLevel]->getState()) == NEWSTRING || (stackFSMs[stackLevel]->getState()) == NEWNUM) {
+		stackFSMsPush(stackFSMs[stackLevel]->getState(), stackFSMs, stackLevel);
+		//printf("New FSM instance needed!\n");
+		printf("StackLevel: %d\n", stackLevel);
+		stackFSMs[stackLevel]->cycle(ev);
+	}
+	return;
 }

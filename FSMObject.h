@@ -9,22 +9,24 @@ class FSMObject :public genericFSM {
 
 public:
 	FSMObject() {
-		rowCount = 5;
+		rowCount = 6;
 		done = false;
 		state = objectState0;
 	}
 	virtual int filterEvents(eventType ev) {
 		switch (ev) {
-		case '"':
+		case '{':
 			return 1;
-		case '}':
+		case '"':
 			return 2;
-		case ':':
+		case '}':
 			return 3;
-		case ',':
+		case ':':
 			return 4;
-		default:
+		case ',':
 			return 5;
+		default:
+			return 6;
 		}
 	}
 	virtual void cycle(eventType* ev) {
@@ -34,24 +36,28 @@ public:
 		i = evento;
 		switch (state) {
 		case objectState0:	j = 0; break;
-		case NEWSTRING:		j = 1; break;
-		case objectState1:	j = 2; break;
-		case NEWVALUE:		j = 3; break;
+		case objectState1:	j = 1; break;
+		case NEWSTRING:		j = 2; break;
+		case objectState2:	j = 3; break;
+		case NEWVALUE:		j = 4; break;
+		case objectState3:	j = 5; break;
 		}
 		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
-		FSMTable[(state * rowCount) + (evento - 1)].action;
+		FSMTable[(j * rowCount) + (evento - 1)].action;
 	}
 
 private:
 #define RX(x) (static_cast<void (genericFSM::* )(eventType*)>(&FSMObject::x))
 
 	//const fsmCell fsmTable[4][6] = {
-	const fsmCell FSMTable[20] = {
-		//'"'							"}"					":"								","				OTHER
-		{NEWSTRING, RX(nopObj)},	{FIN,RX(objectOk)},	{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},		{ERROR,RX(nopObj)},	//objectState0
-		{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},	{objectState1, RX(nopObj)},	{ERROR,RX(nopObj)},		{ERROR,RX(nopObj)},	//NEWSTRING
-		{NEWVALUE,RX(nopObj)},		{ERROR,RX(nopObj)},	{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},		{ERROR,RX(nopObj)},	//objectState1
-		{ERROR,RX(nopObj)},			{FIN,RX(objectOk)},	{ERROR,RX(nopObj)},			{NEWSTRING},			{ERROR,RX(nopObj)},	//NEWVALUE		
+	const fsmCell FSMTable[36] = {
+		//'{'						'"'						"}"						":"							","							OTHER
+		{objectState1, RX(nopObj)},	{ERROR, RX(nopObj)},	{ERROR,RX(nopObj)},		{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},	//objectState0
+		{ERROR, RX(nopObj)},		{NEWSTRING, RX(nopObj)},{FIN,RX(objectOk)},		{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},	//objectState1
+		{ERROR, RX(nopObj)},		{ERROR,RX(nopObj)},		{ERROR,RX(nopObj)},		{objectState2, RX(nopObj)},	{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},	//NEWSTRING
+		{NEWVALUE, RX(nopObj)},		{NEWVALUE,RX(nopObj)},	{ERROR,RX(nopObj)},		{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},			{NEWVALUE,RX(nopObj)},	//objectState2
+		{ERROR, RX(nopObj)},		{ERROR,RX(nopObj)},		{FIN,RX(objectOk)},		{ERROR,RX(nopObj)},			{objectState3,RX(nopObj)},	{ERROR,RX(nopObj)},	//NEWVALUE		
+		{ERROR, RX(nopObj)},		{NEWSTRING,RX(nopObj)},	{ERROR,RX(objectOk)},	{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)},			{ERROR,RX(nopObj)}	//objectState3
 	};
 	void nopObj(eventType* ev) {
 		return;

@@ -33,10 +33,11 @@ public:
 		switch (state) {
 		case arrayState0:	j = 0; break;
 		case arrayState1:	j = 1; break;
-		case NEWSTRING:		j = 2; break;
+		case NEWVALUE:		j = 2; break;
+		case FIN:	j = 2; evento = 2; break;
 		}
-		state = FSMTable[(state * rowCount) + (evento - 1)].nextState;
-		FSMTable[(state * rowCount) + (evento - 1)].action;
+		state = FSMTable[(j * rowCount) + (evento - 1)].nextState;
+		FSMTable[(j * rowCount) + (evento - 1)].action;
 	}
 
 private:
@@ -46,8 +47,8 @@ private:
 	//const fsmCell FSMTable[2][3] = {
 	const fsmCell FSMTable[12] = {
 		//Recibir '['					RECIBIR ']'					//RECIBIR ','				//Other
-		{arrayState1, AX(arrayError)},	{ERROR, AX(arrayError)},	{ERROR, AX(arrayError)},	{ERROR, AX(arrayError)},//arrayState0
-		{NEWVALUE, AX(arrayOk)},		{NEWVALUE, AX(arrayOk)},	{NEWVALUE, AX(arrayOk)},	{NEWVALUE, AX(arrayOk)},//arraySate1
+		{arrayState1, AX(arrayOk)},		{ERROR, AX(arrayError)},	{ERROR, AX(arrayError)},	{ERROR, AX(arrayError)},//arrayState0
+		{NEWVALUE, AX(arrayOk)},		{FIN, AX(arrayOk)},			{NEWVALUE, AX(arrayOk)},	{NEWVALUE, AX(arrayOk)},//arraySate1
 		{ERROR, AX(arrayError)},		{FIN, AX(arrayOk)},			{NEWVALUE, AX(arrayOk)},	{ERROR, AX(arrayError)}	//NEWVALUE
 	};
 
